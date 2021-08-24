@@ -13,17 +13,27 @@ class _HomeState extends State<Home> {
   AudioPlayer audioPlayer = AudioPlayer();
   //Acessando os arquivos da pasta audios
   AudioCache audioCache = AudioCache(prefix: "assets/audios/");
+  //Var para verifica se a musica esta tocando pela primeira vez
   bool primeiraExecucao = true;
+  //Var para controlar o volume do som
+  double volume = 0.5;
 
+  //Função para executar o som
   _executar() async {
     //String url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3";
     //int resultado = await audioPlayer.play(url);
 
-    if(primeiraExecucao){
+    //Controla o volume do som
+    audioPlayer.setVolume(volume);
+
+    //Verifica se é a primeira execução
+    if (primeiraExecucao) {
       //Executando o arquivo mp3
       audioPlayer = await audioCache.play("musica.mp3");
       primeiraExecucao = false;
-    } else{
+    } else {
+      //Caso a musica seja parada ou interrompida, ele não chama denovo o arquivo
+      //Ele executa a ação do audioPlayer
       int resultado = await audioPlayer.resume();
     }
   }
@@ -44,7 +54,18 @@ class _HomeState extends State<Home> {
       ),
       body: Column(
         children: [
-          //slider
+          Slider(
+              value: volume,
+              min: 0,
+              max: 1,
+              divisions: 10,
+              onChanged: (novoVolume) {
+                setState(() {
+                  volume = novoVolume;
+                });
+
+                audioPlayer.setVolume(volume);
+              }),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
