@@ -12,12 +12,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   AudioPlayer audioPlayer = AudioPlayer();
+  AudioCache audioCache = AudioCache(prefix: "assets/audios/");
 
   _executar() async{
 
-    String url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3";
+    //String url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3";
+    //int resultado = await audioPlayer.play(url);
 
-    int resultado = await audioPlayer.play(url);
+    audioPlayer = await audioCache.play("musica.mp3");
 
   }
 
